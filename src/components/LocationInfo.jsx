@@ -32,7 +32,7 @@ export default function LocationInfo({
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-gray-500 to-gray-600 px-4 py-2">
+      <div className="bg-[#2563EB] p-4">
         <h3 className="text-white text-sm font-medium">📊 Location Status</h3>
       </div>
 

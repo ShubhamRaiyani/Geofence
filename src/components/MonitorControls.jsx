@@ -6,7 +6,7 @@ export default function MonitorControls({
 }) {
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2">
+      <div className="bg-[#2563EB] p-4">
         <h3 className="text-white text-sm font-medium">
           🎮 Monitoring Controls
         </h3>

@@ -1,7 +1,7 @@
 export default function RadiusControl({ radius, setRadius }) {
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-green-500 to-blue-500 px-4 py-2">
+      <div className="bg-[#2563EB] p-4">
         <h3 className="text-white text-sm font-medium">🎯 Geofence Radius</h3>
       </div>
 
@@ -21,7 +21,7 @@ export default function RadiusControl({ radius, setRadius }) {
             step={0.5}
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
-            className="w-full h-2 bg-gradient-to-r from-green-200 to-blue-200 rounded-lg appearance-none cursor-pointer slider"
+            className="w-full h-2 bg-gradient-to-r from-[#fd4d47] to-[#f9df15] rounded-lg appearance-none cursor-pointer slider"
           />
           <div className="flex justify-between text-xs text-gray-400">
             <span>0.5 km</span>

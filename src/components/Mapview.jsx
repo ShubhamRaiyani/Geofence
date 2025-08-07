@@ -57,7 +57,7 @@ const MapView = ({
   return (
     <div className="w-full mb-6">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-4 py-2">
+        <div className="bg-[#2563EB] p-4">
           <p className="text-white text-sm font-medium">
             🌍 Interactive Map - Tap to set location
           </p>

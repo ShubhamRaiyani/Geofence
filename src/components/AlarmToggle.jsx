@@ -1,7 +1,7 @@
 export default function AlarmToggle({ isOn, toggle }) {
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2">
+      <div className="bg-[#2563EB] p-4">
         <h3 className="text-white text-sm font-medium">🔔 Alarm Settings</h3>
       </div>
 
