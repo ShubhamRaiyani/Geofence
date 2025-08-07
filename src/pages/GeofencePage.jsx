@@ -39,17 +39,17 @@ export default function GeofencePage() {
   const [isMonitoring, setIsMonitoring] = useState(false);
   const [isInsideGeofence, setIsInsideGeofence] = useState(false);
 
-  // For showing friendly alert messages with transparency text
+  // Friendly alert message state
   const [alertMessage, setAlertMessage] = useState(null);
 
-  // Refs
+  // Refs for geolocation watcher, alarm timer, audio context
   const watchIdRef = useRef(null);
   const alarmIntervalRef = useRef(null);
   const audioContextRef = useRef(null);
 
-  // Haversine formula (distance in km)
+  // Haversine distance calculation (km)
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
+    const R = 6371; // Earth radius km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -60,7 +60,7 @@ export default function GeofencePage() {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   };
 
-  // Save to localStorage on selectedPosition change
+  // Save selectedPosition to localStorage
   useEffect(() => {
     if (selectedPosition) {
       try {
@@ -72,21 +72,21 @@ export default function GeofencePage() {
     }
   }, [selectedPosition]);
 
-  // Save radius
+  // Save radius to localStorage
   useEffect(() => {
     try {
       localStorage.setItem("radius", radius.toString());
     } catch {}
   }, [radius]);
 
-  // Save alarmOn
+  // Save alarmOn to localStorage
   useEffect(() => {
     try {
       localStorage.setItem("alarmOn", JSON.stringify(alarmOn));
     } catch {}
   }, [alarmOn]);
 
-  // Play a beep sound
+  // Play a 500ms beep sound with Web Audio API
   const playBeep = async () => {
     try {
       if (!audioContextRef.current) {
@@ -116,12 +116,14 @@ export default function GeofencePage() {
     }
   };
 
+  // Start the alarm repeating every 2 seconds
   const startAlarm = () => {
     if (alarmIntervalRef.current || !alarmOn) return;
     playBeep();
     alarmIntervalRef.current = setInterval(playBeep, 2000);
   };
 
+  // Stop the alarm
   const stopAlarm = () => {
     if (alarmIntervalRef.current) {
       clearInterval(alarmIntervalRef.current);
@@ -129,53 +131,67 @@ export default function GeofencePage() {
     }
   };
 
-  // Initial geolocation getCurrentPosition with transparency alert
+  // Helper to show alert message:
+  // If type="alert", shows native alert box and clears inline message.
+  // Otherwise shows inline alert banner.
+  const showAlertMessage = (message) => {
+    if (message.type === "alert") {
+      window.alert(
+        typeof message.text === "string" ? message.text : String(message.text)
+      );
+      setAlertMessage(null);
+    } else {
+      setAlertMessage(message);
+    }
+  };
+
+  // Initial geolocation request with friendly messaging and sessionStorage flag to avoid repeat alerts
   useEffect(() => {
     if (!navigator.geolocation) {
-      setAlertMessage({
+      showAlertMessage({
         type: "error",
         text: "Geolocation is not supported by your browser. This app needs access to your location to work properly.",
       });
       return;
     }
 
+    const locationDeniedShown = sessionStorage.getItem("locationDeniedShown");
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setUserLocation([pos.coords.latitude, pos.coords.longitude]);
-        // Friendly transparency message about location usage:
-        setAlertMessage({
+        showAlertMessage({
           type: "info",
           text: "Hey! We just need your location to make sure the geofence works — but don’t worry, your location never leaves your browser and we don't own any database for it.",
         });
-        setTimeout(() => setAlertMessage(null), 12000); // auto dismiss after 12s
+        setTimeout(() => setAlertMessage(null), 12000);
+        // Clear the flag on success so alert could show again if denied later
+        sessionStorage.removeItem("locationDeniedShown");
       },
       () => {
-        setAlertMessage({
-          type: "warning",
-          text: (
-            <>
-              Please enable location services in your browser so this app can
-              track your position. We promise we don’t save or share your
-              location — it stays only on your device.
-            </>
-          ),
-        });
+        if (!locationDeniedShown) {
+          showAlertMessage({
+            type: "alert",
+            text: "Please enable location services in your browser so this app can track your position. We promise we don't save or share your location — it stays only on your device.",
+          });
+          sessionStorage.setItem("locationDeniedShown", "true");
+        }
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }, []);
 
-  // Start monitoring with alert & transparency message
+  // Start monitoring with transparency message
   const startMonitoring = () => {
     if (!selectedPosition) {
-      setAlertMessage({
+      showAlertMessage({
         type: "warning",
-        text: "Pick a spot on the map before starting monitoring! We’ll keep your location only on this browser we are earning to own databases from this.",
+        text: "Pick a spot on the map before starting monitoring! We’ll keep your location only on this browser and we don't own any databases for it.",
       });
       return;
     }
     if (!navigator.geolocation) {
-      setAlertMessage({
+      showAlertMessage({
         type: "error",
         text: "Your browser doesn’t support geolocation, so we can’t monitor location.",
       });
@@ -184,7 +200,7 @@ export default function GeofencePage() {
 
     setIsMonitoring(true);
     setStatus("Monitoring");
-    setAlertMessage({
+    showAlertMessage({
       type: "success",
       text: "Monitoring started! Your location tracking happens only on your device — private and secure.",
     });
@@ -207,14 +223,14 @@ export default function GeofencePage() {
             if (inside) {
               setStatus("Inside Geofence");
               if (alarmOn) startAlarm();
-              setAlertMessage({
+              showAlertMessage({
                 type: "info",
                 text: "You’re inside the geofence now! Alarm will sound if enabled.",
               });
             } else {
               setStatus("Outside Geofence");
               stopAlarm();
-              setAlertMessage({
+              showAlertMessage({
                 type: "info",
                 text: "You moved outside the geofence — alarm stopped.",
               });
@@ -226,7 +242,7 @@ export default function GeofencePage() {
       (err) => {
         console.error(err);
         setStatus("Error getting location");
-        setAlertMessage({
+        showAlertMessage({
           type: "error",
           text: "Oops! We’re having trouble getting your location. Please check browser permissions and try again.",
         });
@@ -236,6 +252,7 @@ export default function GeofencePage() {
     );
   };
 
+  // Stop monitoring
   const stopMonitoring = () => {
     if (watchIdRef.current) {
       navigator.geolocation.clearWatch(watchIdRef.current);
@@ -245,38 +262,38 @@ export default function GeofencePage() {
     setStatus("Not Started");
     setIsInsideGeofence(false);
     stopAlarm();
-    setAlertMessage({
+    showAlertMessage({
       type: "info",
       text: "Monitoring stopped. You can start again anytime.",
     });
   };
 
-  // Toggle alarm with transparency message
+  // Toggle alarm and show transparency messages
   const toggleAlarm = () => {
     const next = !alarmOn;
     setAlarmOn(next);
     if (!next) {
       stopAlarm();
-      setAlertMessage({
+      showAlertMessage({
         type: "info",
         text: "Alarm turned off. You won’t hear any alerts even if inside geofence.",
       });
     } else if (isInsideGeofence && isMonitoring) {
       startAlarm();
-      setAlertMessage({
+      showAlertMessage({
         type: "info",
         text: "Alarm turned on. You’ll hear alerts when inside the geofence.",
       });
     }
   };
 
-  // Sync alarm state on changes
+  // Sync alarm on state change
   useEffect(() => {
     if (!alarmOn) stopAlarm();
     else if (isInsideGeofence && isMonitoring) startAlarm();
   }, [alarmOn, isInsideGeofence, isMonitoring]);
 
-  // Cleanup
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (watchIdRef.current)
@@ -286,7 +303,7 @@ export default function GeofencePage() {
     };
   }, []);
 
-  // Alert banner UI (colored based on type)
+  // Inline alert banner component
   const AlertBanner = ({ message }) => {
     if (!message) return null;
 
@@ -314,8 +331,10 @@ export default function GeofencePage() {
         <Header />
 
         <div className="p-4 space-y-6">
-          {/* Friendly transparent alert messages here */}
-          <AlertBanner message={alertMessage} />
+          {/* Show inline alert if any and NOT of type 'alert' */}
+          {alertMessage && alertMessage.type !== "alert" && (
+            <AlertBanner message={alertMessage} />
+          )}
 
           <MapView
             selectedPosition={selectedPosition}
