@@ -1,0 +1,49 @@
+@import "leaflet/dist/leaflet.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom slider styling */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure Leaflet map renders properly */
+.leaflet-container {
+  height: 400px !important;
+  width: 100% !important;
+}
+
+/* Custom animations */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
