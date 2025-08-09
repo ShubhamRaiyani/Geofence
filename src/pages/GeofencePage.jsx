@@ -102,15 +102,15 @@ export default function GeofencePage() {
       gain.connect(ctx.destination);
 
       osc.type = "sine";
-      osc.frequency.setValueAtTime(800, ctx.currentTime);
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      osc.frequency.setValueAtTime(1200, ctx.currentTime);
+      gain.gain.setValueAtTime(0.5, ctx.currentTime);
 
       osc.start();
       setTimeout(() => {
         try {
           osc.stop();
         } catch {}
-      }, 500);
+      }, 200);
     } catch (err) {
       console.error("beep error:", err);
     }
@@ -120,7 +120,7 @@ export default function GeofencePage() {
   const startAlarm = () => {
     if (alarmIntervalRef.current || !alarmOn) return;
     playBeep();
-    alarmIntervalRef.current = setInterval(playBeep, 2000);
+    alarmIntervalRef.current = setInterval(playBeep, 300);
   };
 
   // Stop the alarm
