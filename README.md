@@ -81,19 +81,18 @@ Shubham Raiyani – Creator of Geofence.
 ## Screenshots
 
 <p align="center">
-  <img src="public/screen1.png" alt="Screen 1" width="30%">
-  <img src="public/screen2.png" alt="Screen 2" width="30%">
-  <img src="public/screen3.png" alt="Screen 3" width="30%">
+  <img src="public/screen1.jpg" alt="Screen 1" width="30%">
+  <img src="public/screen2.jpg" alt="Screen 2" width="30%">
+  <img src="public/screen3.jpg" alt="Screen 3" width="30%">
 </p>
 <p align="center">
-  <img src="public/screen4.png" alt="Screen 4" width="30%">
-  <img src="public/screen5.png" alt="Screen 5" width="30%">
-  <img src="public/screen6.png" alt="Screen 6" width="30%">
+  <img src="public/screen4.jpg" alt="Screen 4" width="30%">
+  <img src="public/screen5.jpg" alt="Screen 5" width="30%">
+  <img src="public/screen6.jpg" alt="Screen 6" width="30%">
 </p>
 <p align="center">
-  <img src="public/screen7.png" alt="Screen 7" width="30%">
-  <img src="public/screen8.png" alt="Screen 8" width="30%">
-  <img src="public/screen-placeholder.png" alt="Placeholder" width="30%">
+  <img src="public/screen7.jpg" alt="Screen 7" width="30%">
+  <img src="public/screen8.jpg" alt="Screen 8" width="30%">
 </p>
 
 ## Permissions
