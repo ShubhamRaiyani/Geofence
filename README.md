@@ -78,15 +78,52 @@ This project is released under the MIT License.
 
 Shubham Raiyani – Creator of Geofence.
 
-## Screenshot
+## Screenshots
 
-![Preview of the Geofence application interface.](path/to/screenshot.png)
-
-(Replace the image path with your actual screenshot path.)
+<p align="center">
+  <img src="public/screen1.png" alt="Screen 1" width="30%">
+  <img src="public/screen2.png" alt="Screen 2" width="30%">
+  <img src="public/screen3.png" alt="Screen 3" width="30%">
+</p>
+<p align="center">
+  <img src="public/screen4.png" alt="Screen 4" width="30%">
+  <img src="public/screen5.png" alt="Screen 5" width="30%">
+  <img src="public/screen6.png" alt="Screen 6" width="30%">
+</p>
+<p align="center">
+  <img src="public/screen7.png" alt="Screen 7" width="30%">
+  <img src="public/screen8.png" alt="Screen 8" width="30%">
+  <img src="public/screen-placeholder.png" alt="Placeholder" width="30%">
+</p>
 
 ## Permissions
 
 This app requires location access to function. Your browser will ask for permission to use your location (via the Geolocation API) when the app loads [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API). Ensure that location services are enabled in your browser or device settings.
+
+## Changelog
+
+**v1.0.0 – Initial Release**
+
+   1) Basic geofencing with Leaflet.js
+
+   2) Draw circular geofence
+
+   3) Real-time location tracking
+
+   4) Inside/outside detection
+
+   5) LocalStorage persistence
+
+   6) Audio alert on geofence entry
+
+**v1.1.0 – (Upcoming)**
+
+   1) Google Maps integration
+
+   2) Address search feature
+
+   3) Bug fixes and performance improvements
+
 
 ## License
 
